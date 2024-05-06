@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5; /* Light grey background for the whole page */
+        }
+        .admin-tabsform-wrapper {
+            max-width: 700px;
+            margin: 20px auto;
+            background-color: #fff; /* White background for the main content */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+        .admin-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 5px;
+        }
+        .admin-tab {
+            width: 20%;
+            font-size: 14px;
+            letter-spacing: .5px;
+            text-align: center;
+            padding: 15px 5px;
+            cursor: pointer;
+            background-color: #333; /* Dark grey */
+            border: 2px solid #555; /* Darker grey border */
+            color: #fff; /* White text */
+            border-radius: 10px;
+            font-weight: bolder;
+            user-select: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .admin-tab:hover {
+            background-color: #444; /* Slightly darker grey on hover */
+            border-color: #666; /* Darker grey border on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow on hover */
+        }
+        .admin-tab.tabActive {
+            background-color: #727171; /* Dark grey background for active tab */
+            border-color: #777; /* Slightly lighter grey border for active tab */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow for active tab */
+        }
+        .admin-form.active {
+            display: block;
+            background-color: #f9f9f9; /* Light grey background for active form */
+            border: 1px solid #ccc; /* Light grey border for active form */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+        .admin-form {
+            display: none;
+        }
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .input-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .input-row label,
+        .ph {
+            width: 200px;
+            flex: 1;
+            margin: 0 5px;
+            padding-left: 80px;
+        }
+        .ph {
+            padding-left: 50px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+        .input-row input {
+            width: 200px;
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin: 0 5px;
+        }
+        .input-row input[type="number"] {
+            width: 200px;
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin: 0 5px;
+            text-align: right; /* Align text to the right */
+            font-family: Arial, sans-serif; /* Change font family */
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .btm-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .btm-headings {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        margin-top: 30px;
+    }
+    .btm-headings h3 {
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .btm-input-row {
+        display: flex;
+        flex-direction: column; /* Align items in a column */
+        margin-bottom: 20px;
+    }
+    
+    .btm-input-label {
+        margin-bottom: 5px;
+        text-align: center;
+    }
+    
+    .btm-input-field {
+        padding: 8px;
+        margin-bottom: 8px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+    .btm-name {
+        width: 170px;
+    }
+    .btm-val {
+        width: 90px;
+        margin-left: -50px;
+    }
+    @media screen and (max-width: 750px) {
+        .admin-tab {
+    max-width: 120px;
+    font-size: 12px;
+    letter-spacing: .5px;
+    text-align: center;
+    padding: 10px 5px;
+    cursor: pointer;
+    background-color: #333;
+    border: 2px solid #555;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: bolder;
+    user-select: none;
+    display: flex;
+    position: relative;
+    transition: all 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+        .btm-headings h3 {
+    color: #333;
+    font-size: 14px;
+    text-align: center;
+    margin: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+        .input-row label, .ph {
+    width: 200px;
+    flex: 1;
+    margin: 0 5px;
+    padding-left: 40px;
+}
+.ph {
+    display: flex;
+        font-size: 17px;
+        margin-bottom: 10px;
+        justify-content: space-evenly;
+}
+.ph:nth-child(2){
+    display: none;
+}
+        .input-row input[type="number"] {
+    width: 80px;
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 0 5px;
+    text-align: right;
+    font-family: Arial, sans-serif;
+}
+    }
+    @media screen and (max-width: 653px) {
+        .btm-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.btm-input-field {
+    max-width: 120px;
+}
+    }
+    @media screen and (max-width: 450px) {
+        .admin-tab {
+    width: 85px;
+    font-size: 12px;
+    letter-spacing: .5px;
+    text-align: center;
+    padding: 10px 5px;
+    cursor: pointer;
+    background-color: #333;
+    border: 2px solid #555;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: bolder;
+    user-select: none;
+    display: flex;
+    position: relative;
+    transition: all 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+        .btm-headings h3 {
+    color: #333;
+    font-size: 14px;
+    text-align: center;
+    margin: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+        .input-row label, .ph {
+    width: 200px;
+    flex: 1;
+    margin: 0 5px;
+    padding-left: 40px;
+}
+
+.ph {
+    display: flex;
+        font-size: 17px;
+        margin-bottom: 10px;
+        justify-content: space-evenly;
+}
+.ph:nth-child(2){
+    display: none;
+}
+        .input-row input[type="number"] {
+    width: 80px;
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 0 5px;
+    text-align: right;
+    font-family: Arial, sans-serif;
+}
+        .btm-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.btm-input-label {
+    text-align: left;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+.input-row input[type="text"]{
+        width: 250px;
+    }
+    .etc {
+        display: none;
+    }
+    }
+    </style>
+</head>
+<body>
+    <div class="admin-tabsform-wrapper">
+        <div class="admin-tabs">
+            <div class="admin-tab scrollButton" data-section="1" onclick="showAdminForm('admin-saleOnly')">
+                Sale
+            </div>
+            <div class="admin-tab tabActive scrollButton" data-section="2" onclick="showAdminForm('admin-purchaseOnly')">
+                Purchase
+            </div>
+            <div class="admin-tab scrollButton" data-section="3" onclick="showAdminForm('admin-remortgageOnly')">
+                Remortgage
+            </div>
+            <div class="admin-tab scrollButton" data-section="4" onclick="showAdminForm('admin-equityTransfer')">
+                Equity Transfer
+            </div>
+        </div>
+        <div class="admin-form scroll-section" id="admin-saleOnly">
+            <div class="input-container">
+                <div class="input-row">
+                    <h3 class="ph values">Property Value</h3>
+                    <h3 class="ph values"></h3>
+                    <h3 class="ph value-fee">Legal Fee</h3>
+                </div>
+                <div class="input-row">
+                    <label for="input1">From</label>
+                    <label for="input2">To</label>
+                    <label for="input3"></label>
+                </div>
+                <div class="input-row">
+                    <input type="number" value="0" readonly class="price-input">
+                    <input type="number" value="150000" readonly class="price-input">
+                    <input type="number" value="450" class="legal-fee1">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="150001" readonly class="price-input">
+                    <input type="number" value="300000" readonly class="price-input">
+                    <input type="number" value="495" class="legal-fee2">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="300001" readonly class="price-input">
+                    <input type="number" value="500000" readonly class="price-input">
+                    <input type="number" value="525" class="legal-fee3">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="500001" readonly class="price-input">
+                    <input type="number" value="750000" readonly class="price-input">
+                    <input type="number" value="585" class="legal-fee4">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="750001" readonly class="price-input">
+                    <input type="number" value="900000" readonly class="price-input">
+                    <input type="number" value="650" class="legal-fee5">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="900001" readonly class="price-input">
+                    <input type="number" value="1000000" readonly class="price-input">
+                    <input type="number" value="825" class="legal-fee6">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="1000001" readonly class="price-input">
+                    <input type="number" value="2000000" readonly class="price-input">
+                    <input type="number" value="950" class="legal-fee7">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="2000001" readonly class="price-input">
+                    <input type="number" value="3000000" readonly class="price-input">
+                    <input type="number" value="1200" class="legal-fee8">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="3000001" readonly class="price-input">
+                    <input type="number" value="4000000" readonly class="price-input">
+                    <input type="number" value="1500" class="legal-fee9">
+                </div>
+                <div class="btm-headings">
+                    <h3>Supplements (ex. VAT)</h3>
+                    <h3>Disbursements (inc. VAT)</h3>
+                </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="name1" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Client is Company" readonly id="name1" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value1" class="btm-input-label">Value:</label>
+                    <input type="number" value="150" id="value1" class="sup-val sup-val1 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="name2" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Bank Transfer Fee" readonly id="name2" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value2" class="btm-input-label">Value:</label>
+                    <input type="number" value="36" id="value2" class="disbur-val1 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="name3" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Leasehold" readonly id="name3" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value3" class="btm-input-label">Value:</label>
+                    <input type="number" value="125" id="value3" class="sup-val sup-val2 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="name4" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Office Copies" readonly id="name4" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value4" class="btm-input-label">Value:</label>
+                    <input type="number" value="6" id="value4" class="disbur-val2 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="name5" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Shared Ownership" readonly id="name5" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value5" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="value5" class="sup-val sup-val3 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="name6" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="ID (AML) check" readonly id="name6" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value6" class="btm-input-label">Value:</label>
+                    <input type="number" value="15" id="value6" class="disbur-val3 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="name7" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Electronic Onboarding" readonly id="name7" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value7" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="value7" class="sup-val sup-val4 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="name8" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="File Opening Fee" readonly id="name8" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value8" class="btm-input-label">Value:</label>
+                    <input type="number" value="150" id="value8" class="disbur-val4 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="name9" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Archiving & Storage Fee" readonly id="name9" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="value9" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="value9" class="sup-val sup-val5 btm-input-field">
+                </div>
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="name9" class="btm-input-label">Etc:</label>
+                    <input type="text" placeholder="Archiving & Storage Fee" readonly id="name9" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="value9" class="btm-input-label">Etc:</label>
+                    <input type="number" id="value9" class="sup-val btm-input-field">
+                </div>
+        
+            </div>
+            </div>
+        </div>
+        <div class="admin-form scroll-section active" id="admin-purchaseOnly">
+            <div class="input-container">
+                <div class="input-row">
+                    <h3 class="ph values">Property Value</h3>
+                    <h3 class="ph values"></h3>
+                    <h3 class="ph value-fee">Legal Fee</h3>
+                </div>
+                <div class="input-row">
+                    <label for="input1">From</label>
+                    <label for="input2">To</label>
+                    <label for="input3"></label>
+                </div>
+                <div class="input-row">
+                    <input type="number" value="0" readonly class="price-input">
+                    <input type="number" value="150000" readonly class="price-input">
+                    <input type="number" value="450" class="p-legal-fee1">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="150001" readonly class="price-input">
+                    <input type="number" value="300000" readonly class="price-input">
+                    <input type="number" value="495" class="p-legal-fee2">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="300001" readonly class="price-input">
+                    <input type="number" value="500000" readonly class="price-input">
+                    <input type="number" value="525" class="p-legal-fee3">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="500001" readonly class="price-input">
+                    <input type="number" value="750000" readonly class="price-input">
+                    <input type="number" value="585" class="p-legal-fee4">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="750001" readonly class="price-input">
+                    <input type="number" value="900000" readonly class="price-input">
+                    <input type="number" value="650" class="p-legal-fee5">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="900001" readonly class="price-input">
+                    <input type="number" value="1000000" readonly class="price-input">
+                    <input type="number" value="825" class="p-legal-fee6">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="1000001" readonly class="price-input">
+                    <input type="number" value="2000000" readonly class="price-input">
+                    <input type="number" value="950" class="p-legal-fee7">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="2000001" readonly class="price-input">
+                    <input type="number" value="3000000" readonly class="price-input">
+                    <input type="number" value="1200" class="p-legal-fee8">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="3000001" readonly class="price-input">
+                    <input type="number" value="4000000" readonly class="price-input">
+                    <input type="number" value="1500" class="p-legal-fee9">
+                </div>
+                <div class="btm-headings">
+                    <h3>Supplements (ex. VAT)</h3>
+                    <h3>Disbursements (inc. VAT)</h3>
+                </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name1" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Auction/Repossession" readonly id="p-name1" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value1" class="btm-input-label">Value:</label>
+                    <input type="number" value="150" id="p-value1" class="p-sup-val p-sup-val1 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="p-name2" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Bank Transfer Fee" readonly id="p-name2" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value2" class="btm-input-label">Value:</label>
+                    <input type="number" value="36" id="p-value2" class="p-disbur-val1 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name3" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Client is Company" readonly id="p-name3" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value3" class="btm-input-label">Value:</label>
+                    <input type="number" value="125" id="p-value3" class="p-sup-val p-sup-val2 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="p-name4" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Bankruptcy Fees" readonly id="p-name4" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value4" class="btm-input-label">Value:</label>
+                    <input type="number" value="6" id="p-value4" class="p-disbur-val2 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name5" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Gifted Deposit" readonly id="p-name5" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value5" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="p-value5" class="p-sup-val p-sup-val3 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="p-name6" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="ID (AML) check" readonly id="p-name6" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value6" class="btm-input-label">Value:</label>
+                    <input type="number" value="15" id="p-value6" class="p-disbur-val3 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name7" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Help-to-Buy ISA" readonly id="p-name7" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value7" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="p-value7" class="p-sup-val p-sup-val4 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="p-name8" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="File Opening Fee" readonly id="p-name8" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value8" class="btm-input-label">Value:</label>
+                    <input type="number" value="150" id="p-value8" class="p-disbur-val4 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name9" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Mortgage Handling Fee" readonly id="p-name9" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value9" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="p-value9" class="p-sup-val p-sup-val5 btm-input-field">
+                </div>
+                <div class="btm-input-row btm-name">
+                    <label for="p-name10" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Searches Pack (Local Authority)" readonly id="p-name10" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value10" class="btm-input-label">Value:</label>
+                    <input type="number" value="0" id="p-value10" class="p-disbur-val5 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name11" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Leasehold" readonly id="p-name11" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value11" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="p-value11" class="p-sup-val p-sup-val6 btm-input-field">
+                </div>
+                <div class="btm-input-row btm-name">
+                    <label for="p-name12" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="HMLR Search" readonly id="p-name12" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value12" class="btm-input-label">Value:</label>
+                    <input type="number" value="0" id="p-value12" class="p-disbur-val6 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name13" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="New Build Legal Work Fee" readonly id="p-name13" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value13" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="p-value13" class="p-sup-val p-sup-val7 btm-input-field">
+                </div>
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="p-name14" class="btm-input-label">Etc:</label>
+                    <input type="text" placeholder="Searches Pack (Local Authority)" readonly id="p-name14" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="p-value14" class="btm-input-label">Etc:</label>
+                    <input type="number" value="0" id="p-value14" class="p-disbur-val7 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name15" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Right to Buy Fee" readonly id="p-name15" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value15" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="p-value15" class="p-sup-val p-sup-val8 btm-input-field">
+                </div>
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="p-name16" class="btm-input-label">Etc:</label>
+                    <input type="text" placeholder="Searches Pack (Local Authority)" readonly id="p-name16" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="p-value16" class="btm-input-label">Etc:</label>
+                    <input type="number" value="0" id="p-value16" class="p-disbur-val8 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="p-name17" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Shared Ownership Fee" readonly id="p-name17" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="p-value17" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="p-value17" class="p-sup-val p-sup-val9 btm-input-field">
+                </div>
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="p-name18" class="btm-input-label">Etc:</label>
+                    <input type="text" placeholder="Searches Pack (Local Authority)" readonly id="p-name18" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="p-value18" class="btm-input-label">Etc:</label>
+                    <input type="number" value="0" id="p-value18" class="p-disbur-val9 btm-input-field">
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="admin-form scroll-section" id="admin-remortgageOnly">
+            <div class="input-container">
+                <div class="input-row">
+                    <h3 class="ph values">New Motgage Value</h3>
+                    <h3 class="ph values"></h3>
+                    <h3 class="ph value-fee">Legal Fee</h3>
+                </div>
+                <div class="input-row">
+                    <label for="input1">From</label>
+                    <label for="input2">To</label>
+                    <label for="input3"></label>
+                </div>
+                <div class="input-row">
+                    <input type="number" value="0" readonly class="price-input">
+                    <input type="number" value="500000" readonly class="price-input">
+                    <input type="number" value="450" class="m-legal-fee1">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="500001" readonly class="price-input">
+                    <input type="number" value="750000" readonly class="price-input">
+                    <input type="number" value="495" class="m-legal-fee2">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="750001" readonly class="price-input">
+                    <input type="number" value="1000000" readonly class="price-input">
+                    <input type="number" value="525" class="m-legal-fee3">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="1000001" readonly class="price-input">
+                    <input type="number" value="1250000" readonly class="price-input">
+                    <input type="number" value="585" class="m-legal-fee4">
+                </div>
+                <div class="btm-headings">
+                    <h3>Supplements (ex. VAT)</h3>
+                    <h3>Disbursements (inc. VAT)</h3>
+                </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="m-name1" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Help to Buy Equity Loan" readonly id="m-name1" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="m-value1" class="btm-input-label">Value:</label>
+                    <input type="number" value="150" id="m-value1" class="m-sup-val1 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="m-name2" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Bank Transfer Fee" readonly id="m-name2" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="m-value2" class="btm-input-label">Value:</label>
+                    <input type="number" value="36" id="m-value2" class="m-disbur-val1 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="m-name3" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Leasehold" readonly id="m-name3" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="m-value3" class="btm-input-label">Value:</label>
+                    <input type="number" value="125" id="m-value3" class="m-sup-val2 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="m-name4" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="File Opening Fee" readonly id="m-name4" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="m-value4" class="btm-input-label">Value:</label>
+                    <input type="number" value="6" id="m-value4" class="m-disbur-val2 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="m-name5" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Shared Ownership" readonly id="m-name5" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="m-value5" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="m-value5" class="m-sup-val m-sup-val3 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="m-name6" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Search Identity Insurance" readonly id="m-name6" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="m-value6" class="btm-input-label">Value:</label>
+                    <input type="number" value="15" id="m-value6" class="m-disbur-val3 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="m-name7" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Electronic Onboarding" readonly id="m-name7" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="m-value7" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="m-value7" class="m-sup-val m-sup-val4 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="m-name8" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="ID (AML) check" readonly id="m-name8" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="m-value8" class="btm-input-label">Value:</label>
+                    <input type="number" value="150" id="m-value8" class="m-disbur-val4 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="m-name9" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Archiving & Storage Fee" readonly id="m-name9" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="m-value9" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="m-value9" class="m-sup-val m-sup-val5 btm-input-field">
+                </div>
+                <div class="btm-input-row btm-name">
+                    <label for="m-name9" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Office Copies" readonly id="m-name9" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="m-value9" class="btm-input-label">Value:</label>
+                    <input type="number" id="m-value9" class="m-disbur-val5 btm-input-field">
+                </div>
+        
+            </div>
+            </div>
+        </div>
+        <div class="admin-form scroll-section" id="admin-equityTransfer">
+            <div class="input-container">
+                <div class="input-row">
+                    <h3 class="ph values">Property Value</h3>
+                    <h3 class="ph values"></h3>
+                    <h3 class="ph value-fee">Legal Fee</h3>
+                </div>
+                <div class="input-row">
+                    <label for="input1">From</label>
+                    <label for="input2">To</label>
+                    <label for="input3"></label>
+                </div>
+                <div class="input-row">
+                    <input type="number" value="0" readonly class="price-input">
+                    <input type="number" value="250000" readonly class="price-input">
+                    <input type="number" value="450" class="e-legal-fee1">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="250001" readonly class="price-input">
+                    <input type="number" value="499999" readonly class="price-input">
+                    <input type="number" value="495" class="e-legal-fee2">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="500000" readonly class="price-input">
+                    <input type="number" value="749999" readonly class="price-input">
+                    <input type="number" value="525" class="e-legal-fee3">
+                </div>
+                <div class="input-row">
+                    <input type="number" value="750000" readonly class="price-input">
+                    <input type="number" value="1000000" readonly class="price-input">
+                    <input type="number" value="585" class="e-legal-fee4">
+                </div>
+                <div class="btm-headings">
+                    <h3>Supplements (ex. VAT)</h3>
+                    <h3>Disbursements (inc. VAT)</h3>
+                </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="e-name1" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Shared Ownership" readonly id="e-name1" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="e-value1" class="btm-input-label">Value:</label>
+                    <input type="number" value="150" id="e-value1" class="e-sup-val e-sup-val1 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="e-name2" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="ID checks" readonly id="e-name2" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="e-value2" class="btm-input-label">Value:</label>
+                    <input type="number" value="36" id="e-value2" class="e-disbur-val1 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name">
+                    <label for="e-name3" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Leasehold" readonly id="e-name3" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="e-value3" class="btm-input-label">Value:</label>
+                    <input type="number" value="125" id="e-value3" class="e-sup-val e-sup-val2 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="e-name4" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="File Opening Fee" readonly id="e-name4" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="e-value4" class="btm-input-label">Value:</label>
+                    <input type="number" value="6" id="e-value4" class="e-disbur-val2 btm-input-field">
+                </div>
+            </div>
+            <div class="btm-container">
+                <div class="btm-input-row btm-name etc" style="opacity: 0;">
+                    <label for="e-name5" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Shared Ownership" readonly id="e-name5" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val etc" style="opacity: 0;">
+                    <label for="e-value5" class="btm-input-label">Value:</label>
+                    <input type="number" value="00" id="e-value5" class="e-sup-val e-sup-val3 btm-input-field">
+                </div>
+                
+                <div class="btm-input-row btm-name">
+                    <label for="e-name6" class="btm-input-label">Name:</label>
+                    <input type="text" placeholder="Office Copies" readonly id="e-name6" class="btm-input-field">
+                </div>
+                <div class="btm-input-row btm-val">
+                    <label for="e-value6" class="btm-input-label">Value:</label>
+                    <input type="number" value="15" id="e-value6" class="e-disbur-val3 btm-input-field">
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the active form
+        function showAdminForm(formId) {
+            var adminForms = document.querySelectorAll(".admin-form");
+            let tabs = document.querySelectorAll(".admin-tab");
+    
+            adminForms.forEach(function (form, index) {
+                if (form.id === formId) {
+                    form.classList.add("active");
+                    tabs[index].classList.add("tabActive");
+                    adminCurIndex = index;
+                } else {
+                    form.classList.remove("active");
+                    tabs[index].classList.remove("tabActive");
+                }
+            });
+        }
+    
+        // Function to update local storage when legal fees are updated
+        function updateLocalStorage() {
+            const legalFee1 = document.querySelector(".legal-fee1").value;
+            const legalFee2 = document.querySelector(".legal-fee2").value;
+            const legalFee3 = document.querySelector(".legal-fee3").value;
+            const legalFee4 = document.querySelector(".legal-fee4").value;
+            const legalFee5 = document.querySelector(".legal-fee5").value;
+            const legalFee6 = document.querySelector(".legal-fee6").value;
+            const legalFee7 = document.querySelector(".legal-fee7").value;
+            const legalFee8 = document.querySelector(".legal-fee8").value;
+            const legalFee9 = document.querySelector(".legal-fee9").value;
+            const legalFeeP1 = document.querySelector(".p-legal-fee1").value;
+            const legalFeeP2 = document.querySelector(".p-legal-fee2").value;
+            const legalFeeP3 = document.querySelector(".p-legal-fee3").value;
+            const legalFeeP4 = document.querySelector(".p-legal-fee4").value;
+            const legalFeeP5 = document.querySelector(".p-legal-fee5").value;
+            const legalFeeP6 = document.querySelector(".p-legal-fee6").value;
+            const legalFeeP7 = document.querySelector(".p-legal-fee7").value;
+            const legalFeeP8 = document.querySelector(".p-legal-fee8").value;
+            const legalFeeP9 = document.querySelector(".p-legal-fee9").value;
+
+            //sale supplemets
+            const suppVal1 = document.querySelector(".sup-val1").value;
+            const suppVal2 = document.querySelector(".sup-val2").value;
+            const suppVal3 = document.querySelector(".sup-val3").value;
+            const suppVal4 = document.querySelector(".sup-val4").value;
+            const suppVal5 = document.querySelector(".sup-val5").value;
+
+            //sale Disbursements
+            const disburVal1 = document.querySelector(".disbur-val1").value;
+            const disburVal2 = document.querySelector(".disbur-val2").value;
+            const disburVal3 = document.querySelector(".disbur-val3").value;
+            const disburVal4 = document.querySelector(".disbur-val4").value;
+
+            const data = {
+                legalFee1: legalFee1,
+                legalFee2: legalFee2,
+                legalFee3: legalFee3,
+                legalFee4: legalFee4,
+                legalFee5: legalFee5,
+                legalFee6: legalFee6,
+                legalFee7: legalFee7,
+                legalFee8: legalFee8,
+                legalFee9: legalFee9,
+                suppVal1: suppVal1,
+                suppVal2: suppVal2,
+                suppVal3: suppVal3,
+                suppVal4: suppVal4,
+                suppVal5: suppVal5,
+                disburVal1: disburVal1,
+                disburVal2: disburVal2,
+                disburVal3: disburVal3,
+                disburVal4: disburVal4
+            };
+    
+            localStorage.setItem("sharedData", JSON.stringify(data));
+        }
+    
+        // Add event listeners to legal fee inputs to trigger updateLocalStorage function
+        const legalFeeInputs = document.querySelectorAll('.legal-fee1, .legal-fee2, .legal-fee3, .legal-fee4, .legal-fee5, .legal-fee6, .legal-fee7, .legal-fee8, .legal-fee9, .sup-val1, .sup-val2, .sup-val3, .sup-val4, .sup-val5, .disbur-val1, .disbur-val2, .disbur-val3, .disbur-val4');
+    
+        legalFeeInputs.forEach(function(input) {
+            input.addEventListener('input', updateLocalStorage);
+        });
+
+        // Populate the legal fee inputs with the stored data on page load
+        window.addEventListener('load', function() {
+            const storedData = JSON.parse(localStorage.getItem('sharedData'));
+            if (storedData) {
+                document.querySelector('.legal-fee1').value = storedData.legalFee1;
+                document.querySelector('.legal-fee2').value = storedData.legalFee2;
+                document.querySelector('.legal-fee3').value = storedData.legalFee3;
+                document.querySelector('.legal-fee4').value = storedData.legalFee4;
+                document.querySelector('.legal-fee5').value = storedData.legalFee5;
+                document.querySelector('.legal-fee6').value = storedData.legalFee6;
+                document.querySelector('.legal-fee7').value = storedData.legalFee7;
+                document.querySelector('.legal-fee8').value = storedData.legalFee8;
+                document.querySelector('.legal-fee9').value = storedData.legalFee9;
+
+                document.querySelector('.sup-val1').value = storedData.suppVal1;
+                document.querySelector('.sup-val2').value = storedData.suppVal2;
+                document.querySelector('.sup-val3').value = storedData.suppVal3;
+                document.querySelector('.sup-val4').value = storedData.suppVal4;
+                document.querySelector('.sup-val5').value = storedData.suppVal5;
+
+                document.querySelector('.disbur-val1').value = storedData.disburVal1;
+                document.querySelector('.disbur-val2').value = storedData.disburVal2;
+                document.querySelector('.disbur-val3').value = storedData.disburVal3;
+                document.querySelector('.disbur-val4').value = storedData.disburVal4;
+
+                
+            }
+        });
+
+        //Purchase
+        function updatePurchaseLocalStorage() {
+            const legalFeeP1 = document.querySelector(".p-legal-fee1").value;
+            const legalFeeP2 = document.querySelector(".p-legal-fee2").value;
+            const legalFeeP3 = document.querySelector(".p-legal-fee3").value;
+            const legalFeeP4 = document.querySelector(".p-legal-fee4").value;
+            const legalFeeP5 = document.querySelector(".p-legal-fee5").value;
+            const legalFeeP6 = document.querySelector(".p-legal-fee6").value;
+            const legalFeeP7 = document.querySelector(".p-legal-fee7").value;
+            const legalFeeP8 = document.querySelector(".p-legal-fee8").value;
+            const legalFeeP9 = document.querySelector(".p-legal-fee9").value;
+
+                        //purchase supplemets
+                        const suppValP1 = document.querySelector(".p-sup-val1").value;
+            const suppValP2 = document.querySelector(".p-sup-val2").value;
+            const suppValP3 = document.querySelector(".p-sup-val3").value;
+            const suppValP4 = document.querySelector(".p-sup-val4").value;
+            const suppValP5 = document.querySelector(".p-sup-val5").value;
+            const suppValP6 = document.querySelector(".p-sup-val6").value;
+            const suppValP7 = document.querySelector(".p-sup-val7").value;
+            const suppValP8 = document.querySelector(".p-sup-val8").value;
+            const suppValP9 = document.querySelector(".p-sup-val9").value;
+
+            //purchase Disbursements
+            const disburValP1 = document.querySelector(".p-disbur-val1").value;
+            const disburValP2 = document.querySelector(".p-disbur-val2").value;
+            const disburValP3 = document.querySelector(".p-disbur-val3").value;
+            const disburValP4 = document.querySelector(".p-disbur-val4").value;
+            const disburValP5 = document.querySelector(".p-disbur-val5").value;
+            const disburValP6 = document.querySelector(".p-disbur-val6").value;
+            
+            const data = {
+                legalFeeP1: legalFeeP1,
+                legalFeeP2: legalFeeP2,
+                legalFeeP3: legalFeeP3,
+                legalFeeP4: legalFeeP4,
+                legalFeeP5: legalFeeP5,
+                legalFeeP6: legalFeeP6,
+                legalFeeP7: legalFeeP7,
+                legalFeeP8: legalFeeP8,
+                legalFeeP9: legalFeeP9,
+                suppValP1: suppValP1,
+                suppValP2: suppValP2,
+                suppValP3: suppValP3,
+                suppValP4: suppValP4,
+                suppValP5: suppValP5,
+                suppValP6: suppValP6,
+                suppValP7: suppValP7,
+                suppValP8: suppValP8,
+                suppValP9: suppValP9,
+                disburValP1: disburValP1,
+                disburValP2: disburValP2,
+                disburValP3: disburValP3,
+                disburValP4: disburValP4,
+                disburValP5: disburValP5,
+                disburValP6: disburValP6
+            };
+    
+            localStorage.setItem("sharedPurchaseData", JSON.stringify(data));
+        }
+    
+         // Add event listeners to legal fee inputs to trigger updatePurchaseLocalStorage function
+         const p_legalFeeInputs = document.querySelectorAll('.p-legal-fee1, .p-legal-fee2, .p-legal-fee3, .p-legal-fee4, .p-legal-fee5, .p-legal-fee6, .p-legal-fee7, .p-legal-fee8, .p-legal-fee9, .p-sup-val1, .p-sup-val2, .p-sup-val3, .p-sup-val4, .p-sup-val5, .p-sup-val6, .p-sup-val7, .p-sup-val8, .p-sup-val9, .p-disbur-val1, .p-disbur-val2, .p-disbur-val3, .p-disbur-val4, .p-disbur-val5, .p-disbur-val6');
+    
+    p_legalFeeInputs.forEach(function(input) {
+        input.addEventListener('input', updatePurchaseLocalStorage);
+    });
+             // Populate the legal fee inputs of purchase with the stored data on page load
+             window.addEventListener('load', function() {
+            const storedData = JSON.parse(localStorage.getItem('sharedPurchaseData'));
+            if (storedData) {
+                document.querySelector('.p-legal-fee1').value = storedData.legalFeeP1;
+                document.querySelector('.p-legal-fee2').value = storedData.legalFeeP2;
+                document.querySelector('.p-legal-fee3').value = storedData.legalFeeP3;
+                document.querySelector('.p-legal-fee4').value = storedData.legalFeeP4;
+                document.querySelector('.p-legal-fee5').value = storedData.legalFeeP5;
+                document.querySelector('.p-legal-fee6').value = storedData.legalFeeP6;
+                document.querySelector('.p-legal-fee7').value = storedData.legalFeeP7;
+                document.querySelector('.p-legal-fee8').value = storedData.legalFeeP8;
+                document.querySelector('.p-legal-fee9').value = storedData.legalFeeP9;
+
+                document.querySelector('.p-sup-val1').value = storedData.suppValP1;
+                document.querySelector('.p-sup-val2').value = storedData.suppValP2;
+                document.querySelector('.p-sup-val3').value = storedData.suppValP3;
+                document.querySelector('.p-sup-val4').value = storedData.suppValP4;
+                document.querySelector('.p-sup-val5').value = storedData.suppValP5;
+                document.querySelector('.p-sup-val6').value = storedData.suppValP6;
+                document.querySelector('.p-sup-val7').value = storedData.suppValP7;
+                document.querySelector('.p-sup-val8').value = storedData.suppValP8;
+                document.querySelector('.p-sup-val9').value = storedData.suppValP9;
+
+                document.querySelector('.p-disbur-val1').value = storedData.disburValP1;
+                document.querySelector('.p-disbur-val2').value = storedData.disburValP2;
+                document.querySelector('.p-disbur-val3').value = storedData.disburValP3;
+                document.querySelector('.p-disbur-val4').value = storedData.disburValP4;
+                document.querySelector('.p-disbur-val5').value = storedData.disburValP5;
+                document.querySelector('.p-disbur-val6').value = storedData.disburValP6;
+            }
+        });
+
+        //Remortgage
+        // Function to update local storage when legal fees are updated
+        function updateRemortgageStorage() {
+            const legalFeeM1 = document.querySelector(".m-legal-fee1").value;
+            const legalFeeM2 = document.querySelector(".m-legal-fee2").value;
+            const legalFeeM3 = document.querySelector(".m-legal-fee3").value;
+            const legalFeeM4 = document.querySelector(".m-legal-fee4").value;
+                //sale supplemets
+    const suppValM1 = document.querySelector(".m-sup-val1").value;
+    const suppValM2 = document.querySelector(".m-sup-val2").value;
+            //sale Disbursements
+            const disburValM1 = document.querySelector(".m-disbur-val1").value;
+            const disburValM2 = document.querySelector(".m-disbur-val2").value;
+            const disburValM3 = document.querySelector(".m-disbur-val3").value;
+            const disburValM4 = document.querySelector(".m-disbur-val4").value;
+            const disburValM5 = document.querySelector(".m-disbur-val5").value;
+
+            const data = {
+                legalFeeM1: legalFeeM1,
+                legalFeeM2: legalFeeM2,
+                legalFeeM3: legalFeeM3,
+                legalFeeM4: legalFeeM4,
+                suppValM1: suppValM1,
+        suppValM2: suppValM2,
+                disburValM1: disburValM1,
+                disburValM2: disburValM2,
+                disburValM3: disburValM3,
+                disburValM4: disburValM4,
+                disburValM5: disburValM5
+            };
+    
+            localStorage.setItem("sharedRemortgageData", JSON.stringify(data));
+        }
+    
+        // Add event listeners to legal fee inputs to trigger updateRemortgageStorage function
+        const mFeeInputs = document.querySelectorAll('.m-legal-fee1, .m-legal-fee2, .m-legal-fee3, .m-legal-fee4, .m-sup-val1, .m-sup-val2, .m-disbur-val1, .m-disbur-val2, .m-disbur-val3, .m-disbur-val4, .m-disbur-val5');
+    
+        mFeeInputs.forEach(function(input) {
+            input.addEventListener('input', updateRemortgageStorage);
+        });
+
+        // Populate the legal fee inputs with the stored data on page load
+        window.addEventListener('load', function() {
+            const storedData = JSON.parse(localStorage.getItem('sharedRemortgageData'));
+            if (storedData) {
+                document.querySelector('.m-legal-fee1').value = storedData.legalFeeM1;
+                document.querySelector('.m-legal-fee2').value = storedData.legalFeeM2;
+                document.querySelector('.m-legal-fee3').value = storedData.legalFeeM3;
+                document.querySelector('.m-legal-fee4').value = storedData.legalFeeM4;
+                document.querySelector('.m-sup-val1').value = storedData.suppValM1;
+        document.querySelector('.m-sup-val2').value = storedData.suppValM2;
+                document.querySelector('.m-disbur-val1').value = storedData.disburValM1;
+                document.querySelector('.m-disbur-val2').value = storedData.disburValM2;
+                document.querySelector('.m-disbur-val3').value = storedData.disburValM3;
+                document.querySelector('.m-disbur-val4').value = storedData.disburValM4;
+                document.querySelector('.m-disbur-val5').value = storedData.disburValM5;
+
+                
+            }
+        });
+    
+        //Equity Transfer
+        // Function to update local storage when legal fees are updated
+        function updateRemortgageStorage() {
+            const legalFeeE1 = document.querySelector(".e-legal-fee1").value;
+            const legalFeeE2 = document.querySelector(".e-legal-fee2").value;
+            const legalFeeE3 = document.querySelector(".e-legal-fee3").value;
+            const legalFeeE4 = document.querySelector(".e-legal-fee4").value;
+                //sale supplemets
+    const suppValE1 = document.querySelector(".e-sup-val1").value;
+    const suppValE2 = document.querySelector(".e-sup-val2").value;
+            //sale Disbursements
+            const disburValE1 = document.querySelector(".e-disbur-val1").value;
+            const disburValE2 = document.querySelector(".e-disbur-val2").value;
+            const disburValE3 = document.querySelector(".e-disbur-val3").value;
+
+            const data = {
+                legalFeeE1: legalFeeE1,
+                legalFeeE2: legalFeeE2,
+                legalFeeE3: legalFeeE3,
+                legalFeeE4: legalFeeE4,
+                suppValE1: suppValE1,
+                suppValE2: suppValE2,
+                disburValE1: disburValE1,
+                disburValE2: disburValE2,
+                disburValE3: disburValE3
+            };
+    
+            localStorage.setItem("sharedEquityData", JSON.stringify(data));
+        }
+    
+        // Add event listeners to legal fee inputs to trigger updateRemortgageStorage function
+        const eFeeInputs = document.querySelectorAll('.e-legal-fee1, .e-legal-fee2, .e-legal-fee3, .e-legal-fee4, .e-sup-val1, .e-sup-val2, .e-disbur-val1, .e-disbur-val2, .e-disbur-val3');
+    
+        eFeeInputs.forEach(function(input) {
+            input.addEventListener('input', updateRemortgageStorage);
+        });
+
+        // Populate the legal fee inputs with the stored data on page load
+        window.addEventListener('load', function() {
+            const storedData = JSON.parse(localStorage.getItem('sharedEquityData'));
+            if (storedData) {
+                document.querySelector('.e-legal-fee1').value = storedData.legalFeeE1;
+                document.querySelector('.e-legal-fee2').value = storedData.legalFeeE2;
+                document.querySelector('.e-legal-fee3').value = storedData.legalFeeE3;
+                document.querySelector('.e-legal-fee4').value = storedData.legalFeeE4;
+                document.querySelector('.e-sup-val1').value = storedData.suppValE1;
+        document.querySelector('.e-sup-val2').value = storedData.suppValE2;
+                document.querySelector('.e-disbur-val1').value = storedData.disburValE1;
+                document.querySelector('.e-disbur-val2').value = storedData.disburValE2;
+                document.querySelector('.e-disbur-val3').value = storedData.disburValE3;
+                
+            }
+        });
+    </script>
+    
+    
+</body>
+</html>
+

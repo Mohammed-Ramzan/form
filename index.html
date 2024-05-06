@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .tabsform-wrapper {
+            max-width: 700px;
+            margin: 20px auto;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 5px;
+        }
+
+        .tab {
+            width: 20%;
+            font-size: 14px;
+            letter-spacing: .5px;
+            text-align: center;
+            padding: 15px 5px;
+            cursor: pointer;
+            background-color: #f2f2f2; /* Light grey */
+            border: 2px solid #dcdcdc; /* Lighter grey */
+            color: #333; /* Dark grey */
+            border-radius: 10px;
+            font-weight: bolder;
+            user-select: none;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+        .tab:hover {
+            background-color: #e5e5e5; /* Slightly darker grey */
+            border-color: #ccc; /* Darker grey */
+            box-shadow: 0 6px 12px rgba(196, 196, 196, 0.2);
+        }
+        .tab.tabActive {
+            background-color: #fff; /* White */
+            border-color: #333; /* Dark grey */
+            color: #333; /* Dark grey */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        @media screen and (min-width: 721px) {
+.tab.tabActive::before {
+    content: '';
+    position: absolute;
+    bottom: -20px; /* Adjust this value to position the arrow */
+    left: 50%;
+    transform: translateX(-50%);
+    border-style: solid;
+    border-width: 20px 10px 0 10px; /* Adjust the size of the arrow here */
+    border-color: #333333 transparent transparent transparent; /* Match arrow color with tab background */
+    z-index: -1;
+}
+
+      }
+        .form.active {
+            display: block;
+        }
+        .form {
+            display: none;
+            padding: 25px;
+            padding-top: 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .sb-form2 {
+            margin-top: 20px;
+        }
+        .heading {
+            margin-left: -25px;
+            margin-right: -25px;
+            text-align: center;
+            font-size: 29px;
+            margin-bottom: 25px;
+            background-color: #f2f2f2;
+            padding-block: 10px;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .radio-check-row {
+            margin-bottom: 0;
+        }
+        .label {
+            flex: 1;
+            text-align: left;
+            color: #333;
+            font-weight: bold;
+            user-select: none;
+        }
+        .radio-checkbox-label {
+            color: #333;
+            font-weight: bold;
+            user-select: none;
+        }
+        .input-field {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            width: 100%;
+        }
+        input[type="checkbox"]{
+            accent-color: #333;
+            margin-right: 5px;
+        }
+        input[type="radio"] {
+            accent-color: #333;
+            margin-right: 2px;
+            margin-left: 20px;
+        }
+        .select-labels {
+            display: flex;
+            justify-content: space-evenly;
+            margin-left: -40px;
+        }
+       .select-field {
+        padding: 8px;
+            border: 1px solid #ccc;
+            width: 45%;
+       }
+       .registeration {
+        color: #333;
+        font-weight: 400;
+       }
+        .etc {
+            opacity: 0;
+        }
+        .radio-checkbox-row {
+            border: none;
+        }
+        label span {
+            color: red;
+        }
+        .quot-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .fee-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .fee-table td {
+            font-size: 13px;
+            color: #111;
+        }
+        .fee-table td, .fee-table th {
+            padding: 10px;
+            text-align: left;
+        }
+        .fee-table tr {
+            border-bottom: 1px solid #ddd; /* Add horizontal line */
+        }
+        .fee-table tr:last-child {
+            border-bottom: none; /* Remove bottom border for the last row */
+        }
+        .fee-table th {
+            background-color: #f2f2f2;
+        }
+        .sale-quot-container, .buy-quot-container, .remortgage-quot-container, .equity-quot-container {
+            display: none;
+        }
+
+        .btn-calculate {
+           margin: 20px auto;
+            text-align: center;
+            background-color: #111;
+            color: #f1f1f1;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.5s ease all;
+        }
+        .btn-calculate:hover {
+            background-color: #252525;
+            color: #fff;
+            border: 2px solid #f1f1f1;
+        }
+
+        @media screen and (max-width: 420px) {
+            .tab {
+    width: 100%;
+}
+.tabs {
+    display: block;
+}
+.heading {
+    margin-inline: 0;
+}
+.form {
+    border: none;
+}
+            .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .input-field {
+    flex: none;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    width: 100%;
+}
+.label {
+    margin-left: 10px;
+    margin-bottom: 15px;
+}  .radio-checkbox-row {
+    margin-top: -35px;
+        border: none;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="tabsform-wrapper">
+        <div class="tabs">
+            <div class="tab scrollButton" data-section="1" onclick="showForm('saleOnly')">
+                Sale
+            </div>
+            <div class="tab tabActive scrollButton" data-section="2" onclick="showForm('purchaseOnly')">
+                Purchase
+            </div>
+            <div class="tab scrollButton" data-section="3" onclick="showForm('saleAndPurchase')">
+                Sale & Purchase
+            </div>
+            <div class="tab scrollButton" data-section="4" onclick="showForm('remortgageOnly')">
+                Remortgage
+            </div>
+            <div class="tab scrollButton" data-section="5" onclick="showForm('equityTransfer')">
+                Equity Transfer
+            </div>
+        </div>
+        <div class="form scroll-section" id="saleOnly">
+            <h2 class="heading">Selling A Property</h2>
+            <div class="input-row">
+                <label class="label" for="sale_postcode">Postcode: <span>*</span></label>
+                <input class="input-field" type="text" placeholder="e.g. SW1A 1AA" id="sale_postcode" name="sale_postcode">
+            </div>
+            <div class="input-row">
+                <label class="label" for="sale_line">Line 1:</label>
+                <input class="input-field" type="text" id="sale_line" name="sale_line">
+            </div>
+            <div class="input-row">
+                <label class="label" for="sale_price">Value: <span>*</span></label>
+                <input class="input-field" type="number" placeholder="e.g. 150000" id="sale_price" name="sale_price">
+            </div>
+            <div class="input-row">
+                <label class="label" for="sale_agent">No of People Involved: <span>*</span></label>
+                <input class="input-field" type="text" id="sale_agent" name="sale_agent">
+            </div>
+            <div class="input-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="radio" id="sell-freehold" name="purchase_payment_method">
+                <label class="radio-checkbox-label" for="sell-freehold">Freehold</label>
+                <input class="radio-checkbox-field" type="radio" id="sell_leasehold" name="purchase_payment_method">
+                <label class="radio-checkbox-label" for="sell_leasehold">Leasehold</label>
+            </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="sell-company">
+                <label class="radio-checkbox-label" for="sell-company">Client is Company</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="sell-shared">
+                <label class="radio-checkbox-label" for="sell-shared">Shared Ownership</label>
+                </div>
+            </div>
+            <button class="btn-calculate sale-calc" id="sale-calculate">Calculate or Review</button>
+        </div>
+        <div class="form scroll-section active" id="purchaseOnly">
+            <h2 class="heading">Buying A Property</h2>
+            <div class="input-row">
+                <label class="label" for="purchase_postcode">Postcode: <span>*</span></label>
+                <input class="input-field" type="text" placeholder="e.g. SW1A 1AA" id="purchase_postcode" name="purchase_postcode">
+            </div>
+            <div class="input-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="unknown">
+                <label class="radio-checkbox-label" for="unknown">Address Unknown</label>
+                </div>
+            </div>
+            <div class="input-row">
+                <label class="label" for="purchase_line">Line 1:</label>
+                <input class="input-field" type="text" id="purchase_line" name="purchase_line">
+            </div>
+            <div class="input-row">
+                <label class="label" for="purchase_price">Value: <span>*</span></label>
+                <input class="input-field" type="number" placeholder="e.g. 150000" id="purchase_price" name="purchase_price">
+            </div>
+            <div class="input-row">
+                <label class="label" for="purchase_people">No of People Involved: <span>*</span></label>
+                <input class="input-field" type="text" id="purchase_people" name="purchase_people">
+            </div>
+            <div class="input-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="radio" id="purchase_freehold" name="purchase_type">
+                    <label class="radio-checkbox-label" for="purchase_freehold">Freehold</label>
+                    <input class="radio-checkbox-field" type="radio" id="purchase_leasehold" name="purchase_type">
+                    <label class="radio-checkbox-label" for="purchase_leasehold">Leasehold</label>
+                </div>
+            </div>
+            
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="auction">
+                <label class="radio-checkbox-label" for="auction">Auction/Repossession</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="sec-home">
+                <label class="radio-checkbox-label" for="sec-home">Buying Buy to Let or 2nd Home</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="company">
+                <label class="radio-checkbox-label" for="company">Client is Company</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="first-time">
+                <label class="radio-checkbox-label" for="first-time">Buying First Time Buyer</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="gifted">
+                <label class="radio-checkbox-label" for="gifted">Gifted Deposit</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="ISA">
+                <label class="radio-checkbox-label" for="ISA">Help-to-Buy ISA</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="mortgaged">
+                <label class="radio-checkbox-label" for="mortgaged">Mortgaged</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="build">
+                <label class="radio-checkbox-label" for="build">New Build</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="UK">
+                <label class="radio-checkbox-label" for="UK">Buying Non UK Resident</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="right">
+                <label class="radio-checkbox-label" for="right">Right to Buy</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="shared">
+                <label class="radio-checkbox-label" for="shared">Shared Ownership</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="unregistered">
+                <label class="radio-checkbox-label" for="unregistered">Buying Unregistered</label>
+                </div>
+            </div>
+            <button class="btn-calculate purchase-calc" id="buy-calculate">Calculate or Review</button>
+        </div>
+        <div class="form scroll-section" id="saleAndPurchase">
+            <div class="sb-form scroll-section">
+                <h2 class="heading">Selling A Property</h2>
+                <div class="input-row">
+                    <label class="label" for="sb_postcode">Postcode: <span>*</span></label>
+                    <input class="input-field" type="text" placeholder="e.g. SW1A 1AA" id="sb_postcode" name="sb_postcode">
+                </div>
+                <div class="input-row">
+                    <label class="label" for="sb_line">Line 1:</label>
+                    <input class="input-field" type="text" id="sb_line" name="sb_line">
+                </div>
+                <div class="input-row">
+                    <label class="label" for="sb_price">Value: <span>*</span></label>
+                    <input class="input-field" type="number" placeholder="e.g. 150000" id="sb_price" name="sb_price">
+                </div>
+                <div class="input-row">
+                    <label class="label" for="sb_agent">No of People Involved: <span>*</span></label>
+                    <input class="input-field" type="text" id="sb_agent" name="sb_agent" value="1">
+                </div>
+                <div class="input-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="radio" id="sb-freehold" name="sb-freehold">
+                    <label class="radio-checkbox-label" for="sb-freehold">Freehold</label>
+                    <input class="radio-checkbox-field" type="radio" id="sb_leasehold" name="sb_leasehold">
+                    <label class="radio-checkbox-label" for="sb_leasehold">Leasehold</label>
+                </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sb-company">
+                    <label class="radio-checkbox-label" for="sb-company">Client is Company</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sb-shared">
+                    <label class="radio-checkbox-label" for="sb-shared">Shared Ownership</label>
+                    </div>
+                </div>
+            </div>
+            <div class="sb-form scroll-section sb-form2">
+                <h2 class="heading">Buying A Property</h2>
+                <div class="input-row">
+                    <label class="label" for="sp_postcode">Postcode: <span>*</span></label>
+                    <input class="input-field" type="text" placeholder="e.g. SW1A 1AA" id="sp_postcode" name="sp_postcode">
+                </div>
+                <div class="input-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-unknown">
+                    <label class="radio-checkbox-label" for="sp-unknown">Address Unknown</label>
+                    </div>
+                </div>
+                <div class="input-row">
+                    <label class="label" for="sp_line">Line 1:</label>
+                    <input class="input-field" type="text" id="sp_line" name="sp_line">
+                </div>
+                <div class="input-row">
+                    <label class="label" for="sp_price">Value: <span>*</span></label>
+                    <input class="input-field" type="number" placeholder="e.g. 150000" id="sp_price" name="sp_price">
+                </div>
+                <div class="input-row">
+                    <label class="label" for="sp_people">No of People Involved: <span>*</span></label>
+                    <input class="input-field" type="text" id="sp_people" name="sp_people" value="1">
+                </div>
+                <div class="input-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                        <input class="radio-checkbox-field" type="radio" id="sp_freehold" name="sp_type">
+                        <label class="radio-checkbox-label" for="sp_freehold">Freehold</label>
+                        <input class="radio-checkbox-field" type="radio" id="sp_leasehold" name="sp_type">
+                        <label class="radio-checkbox-label" for="sp_leasehold">Leasehold</label>
+                    </div>
+                </div>
+                
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-auction">
+                    <label class="radio-checkbox-label" for="sp-auction">Auction/Repossession</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-sec-home">
+                    <label class="radio-checkbox-label" for="sp-sec-home">Buying Buy to Let or 2nd Home</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-company">
+                    <label class="radio-checkbox-label" for="sp-company">Client is Company</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-first-time">
+                    <label class="radio-checkbox-label" for="sp-first-time">Buying First Time Buyer</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-gifted">
+                    <label class="radio-checkbox-label" for="sp-gifted">Gifted Deposit</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-ISA">
+                    <label class="radio-checkbox-label" for="sp-ISA">Help-to-Buy ISA</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-mortgaged">
+                    <label class="radio-checkbox-label" for="sp-mortgaged">Mortgaged</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-build">
+                    <label class="radio-checkbox-label" for="sp-build">New Build</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-UK">
+                    <label class="radio-checkbox-label" for="sp-UK">Buying Non UK Resident</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-right">
+                    <label class="radio-checkbox-label" for="sp-right">Right to Buy</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-shared">
+                    <label class="radio-checkbox-label" for="sp-shared">Shared Ownership</label>
+                    </div>
+                </div>
+                <div class="input-row radio-check-row">
+                    <label class="label etc">Etc</label>
+                    <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="checkbox" id="sp-unregistered">
+                    <label class="radio-checkbox-label" for="sp-unregistered">Buying Unregistered</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form scroll-section" id="remortgageOnly">
+            <h2 class="heading">Remortgage a Property</h2>
+            <div class="input-row">
+                <label class="label" for="rgage_postcode">Postcode: <span>*</span></label>
+                <input class="input-field" type="text" placeholder="e.g. SW1A 1AA" id="rgage_postcode" name="rgage_postcode">
+            </div>
+            <div class="input-row">
+                <label class="label" for="rgage_line">Line 1:</label>
+                <input class="input-field" type="text" id="rgage_line" name="rgage_line">
+            </div>
+            <div class="input-row">
+                <label class="label" for="rgage_price">Property Value: <span>*</span></label>
+                <input class="input-field" type="number" placeholder="e.g. 150000" id="rgage_price" name="rgage_price">
+            </div>
+            <div class="input-row">
+                <label class="label" for="rgage_new">New mortgage value: <span>*</span></label>
+                <input class="input-field" type="text" id="rgage_new" name="rgage_new">
+            </div>
+            <div class="input-row">
+                <label class="label" for="rgage_agent">No of People Involved: <span>*</span></label>
+                <input class="input-field" type="number" id="rgage_agent" name="rgage_agent" value="1">
+            </div>
+            <div class="input-row">
+                <label class="label" for="rgage_lenders">Name of Current Lenders:</label>
+                <input class="input-field" type="text" id="rgage_lenders" name="rgage_lenders">
+            </div>
+            <div class="input-row">
+                <label class="label" for="rgage_num">Account Number:</label>
+                <input class="input-field" type="text" id="rgage_num" name="rgage_num">
+            </div>
+            <div class="input-row">
+                <label class="label" for="rgage_newprop">Name of Proposed New Lender:</label>
+                <input class="input-field" type="text" id="rgage_newprop" name="rgage_newprop">
+            </div>
+            <div class="input-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="radio" id="rgage-freehold" name="rgage-freehold">
+                <label class="radio-checkbox-label" for="rgage-freehold">Freehold</label>
+                <input class="radio-checkbox-field" type="radio" id="rgage_leasehold" name="rgage_leasehold">
+                <label class="radio-checkbox-label" for="rgage_leasehold">Leasehold</label>
+            </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="rgage-loan">
+                <label class="radio-checkbox-label" for="rgage-loan">Help to Buy Equity Loan</label>
+                </div>
+            </div>
+            <button class="btn-calculate remortgage-calc" id="rgage-calculate">Calculate or Review</button>
+        </div>
+        <div class="form scroll-section" id="equityTransfer">
+            <h2 class="heading">Transfer of Equity</h2>
+            <div class="input-row">
+                <label class="label" for="eq_postcode">Postcode: <span>*</span></label>
+                <input class="input-field" type="text" placeholder="e.g. SW1A 1AA" id="eq_postcode" name="eq_postcode">
+            </div>
+            <div class="input-row">
+                <label class="label" for="eq_line">Line 1:</label>
+                <input class="input-field" type="text" id="eq_line" name="eq_line">
+            </div>
+            <div class="input-row">
+                <label class="label" for="eq_price">Property Value: <span>*</span></label>
+                <input class="input-field" type="number" id="eq_price" name="eq_price">
+            </div>
+            <div class="input-row">
+                <label class="label" for="eq-transfer">Transfer:</label>
+                <select class="input-field select-inp" id="eq-transfer" name="eq-transfer">
+                    <option value="whole">Whole</option>
+                    <option value="half">Half</option>
+                    <option value="zer">Zero</option>
+                </select>
+            </div>
+            <div class="input-row">
+                <label class="label" for="eq_con">Consideration Value: <span>*</span></label>
+                <input class="input-field" type="text" id="eq_con" name="eq_con">
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="eq-reg">
+                <label class="radio-checkbox-label registeration" for="eq-reg">Registration requirements will be the sole responsibilty of the other party's solicitors</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                    <input class="radio-checkbox-field" type="radio" id="eq-freehold" name="purchase_payment_method">
+                    <label class="radio-checkbox-label" for="eq-freehold">Freehold</label>
+                    <input class="radio-checkbox-field" type="radio" id="eq_leasehold" name="purchase_payment_method">
+                    <label class="radio-checkbox-label" for="eq_leasehold">Leasehold</label>
+                </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row select-data">
+                    <div class="select-labels">
+                <label class="radio-checkbox-label" for="eq-added">People Being Added</label>
+                <label class="radio-checkbox-label" for="eq-removed">People Being Removed</label>
+            </div>
+                <div class="select-fields">
+                    <select class="radio-checkbox-field select-field" id="eq-added" name="eq-added">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                <select class="radio-checkbox-field select-field" id="eq-removed" name="eq-removed">
+                    <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                </select>
+            </div>
+            </div>
+            </div>
+            <div class="input-row radio-check-row">
+                <label class="label etc">Etc</label>
+                <div class="input-field radio-checkbox-row">
+                <input class="radio-checkbox-field" type="checkbox" id="eq-shared">
+                <label class="radio-checkbox-label" for="eq-shared">Shared Ownership</label>
+                </div>
+            </div>
+            <button class="btn-calculate equity-calc" id="equity-calculate">Calculate or Review</button>
+        </div>
+    </div>
+
+    <div class="quot-container sale-quot-container">
+        <h2>Quotation Pricing</h2>
+        <table class="fee-table">
+            <tr>
+                <th>Sale</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>Legal Fees</td>
+                <td class="sale-legal-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Legal Fees VAT at 20%</td>
+                <td class="sale-legal-fee-20"><span>£</span>105.00</td>
+            </tr>
+
+            <tr>
+                <th>Supplements</th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <td>Client is Company</td>
+                <td class="sale-client-company">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Shared Ownership Fee</td>
+                <td class="shared-ownership-company">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Electronic Onboarding</td>
+                <td class="sale-electronic-onboarding">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Archiving & Storage Fee</td>
+                <td class="sale-archiving-storage-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>VAT at 20%</td>
+                <td class="sale-vat-20">£<span>30</span>.00</td>
+            </tr>
+
+            <tr>
+                <th>Disbursements</th>
+                <th></th>
+            </tr>
+
+   
+            <tr>
+                <td>Bank Transfer Fee</td>
+                <td class="sale-bank-transfer-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Office Copies</td>
+                <td class="sale-office-copies">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>ID (AML) check</td>
+                <td class="sale-id-check">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>File Opening Fee</td>
+                <td class="sale-file-opening-fee">£<span>0</span>.00</td>
+            </tr>
+
+            
+            <tr>
+                <th>Total</th>
+                <th class="sale-total">$153000</th>
+            </tr>
+        </table>
+    </div>
+
+    <div class="quot-container buy-quot-container">
+        <h2>Quotation Pricing</h2>
+        <table class="fee-table">
+            <tr>
+                <th>Purchase</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>Legal Fees</td>
+                <td class="legal-fee">£<span class="buy-legal-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Legal Fees VAT at 20%</td>
+                <td class="legal-fee-20">£<span>150</span>.00</td>
+            </tr>
+
+            <tr>
+                <th>Supplements</th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <td>Legal Pack Review for Auction</td>
+                <td class="legal-pack-review">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Limited Company Legal Work Fee</td>
+                <td class="limited-company-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Gifted Deposit</td>
+                <td class="gifted-deposit">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Help-to-Buy ISA</td>
+                <td class="help-to-buy-isa">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Mortgage Handling Fee</td>
+                <td class="mortgage-handling-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>New Build Legal Work Fee</td>
+                <td class="new-build-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Right to Buy Fee</td>
+                <td class="right-to-buy-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Shared Ownership Fee</td>
+                <td class="shared-ownership-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Archiving & Storage Fee</td>
+                <td class="archiving-storage-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Electronic Onboarding</td>
+                <td class="electronic-onboarding">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>VAT at 20%</td>
+                <td class="vat-20">£<span>0</span>.00</td>
+            </tr>
+
+            <tr>
+                <th>Disbursements</th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <td>File Opening Fee</td>
+                <td class="file-opening-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Bank Transfer Fee</td>
+                <td class="bank-transfer-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Bankruptcy Fee</td>
+                <td class="bankruptcy-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>ID (AML) check</td>
+                <td class="id-check">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Searches Pack (Local Authority, Drainage & water, Environmental Searches)</td>
+                <td class="searches-pack">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>HMLR Search</td>
+                <td class="hmlr-search">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Land Registry Fee</td>
+                <td class="land-registry-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Stamp Duty (SDLT)</td>
+                <td class="stamp-duty">£<span>0</span>.00</td>
+            </tr>
+            
+            <tr>
+                <th>Total</th>
+                <th class="total">$153000</th>
+            </tr>
+        </table>
+    </div>
+    <div class="quot-container remortgage-quot-container">
+        <h2>Quotation Pricing</h2>
+        <table class="fee-table">
+            <tr>
+                <th>Remortgage</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>Legal Fees</td>
+                <td class="remortgage-legal-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Legal Fees VAT at 20%</td>
+                <td class="remortgage-legal-fee-20">£<span>105</span>.00</td>
+            </tr>
+
+            <tr>
+                <th>Supplements</th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <td>Help to Buy Equity Loan</td>
+                <td class="remortgage-equity-loan">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Leasehold</td>
+                <td class="remortgage-leasehold">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>VAT at 20%</td>
+                <td class="remortgage-vat-20">£<span>100</span>.00</td>
+            </tr>
+
+            <tr>
+                <th>Disbursements</th>
+                <th></th>
+            </tr>
+
+   
+            <tr>
+                <td>Bank Transfer Fee</td>
+                <td class="remortgage-bank-transfer-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Office Copies</td>
+                <td class="remortgage-office-copies">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Search Identity Insurance</td>
+                <td class="remortgage-identity-insurance">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>ID (AML) check</td>
+                <td class="remortgage-id-check">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>File Opening Fee</td>
+                <td class="remortgage-file-opening-fee">£<span>0</span>.00</td>
+            </tr>
+
+            
+            <tr>
+                <th>Total</th>
+                <th class="remortgage-total">$153000</th>
+            </tr>
+        </table>
+    </div>
+    <div class="quot-container equity-quot-container">
+        <h2>Quotation Pricing</h2>
+        <table class="fee-table">
+            <tr>
+                <th>Equity</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>Legal Fees</td>
+                <td class="equity-legal-fee">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Legal Fees VAT at 20%</td>
+                <td class="equity-legal-fee-20">£<span>105</span>.00</td>
+            </tr>
+
+            <tr>
+                <th>Supplements</th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <td>Shared Ownership</td>
+                <td class="equity-shared-ownership">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>Leasehold</td>
+                <td class="equity-leasehold">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>VAT at 20%</td>
+                <td class="equity-vat-20">£<span>100</span>.00</td>
+            </tr>
+
+            <tr>
+                <th>Disbursements</th>
+                <th></th>
+            </tr>
+
+   
+            <tr>
+                <td>Office Copies</td>
+                <td class="equity-office-copies">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>ID check</td>
+                <td class="equity-id-check">£<span>0</span>.00</td>
+            </tr>
+            <tr>
+                <td>File Opening Fee</td>
+                <td class="equity-file-opening-fee">£<span>0</span>.00</td>
+            </tr>
+
+            
+            <tr>
+                <th>Total</th>
+                <th class="equity-total">$153000</th>
+            </tr>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
